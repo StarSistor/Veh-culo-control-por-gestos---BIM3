@@ -1,0 +1,84 @@
+#include <SoftwareSerial.h> // libreria que permite establecer pines digitales
+
+SoftwareSerial BT(3, 4);  // pin 3 como RX, pin 4 como TX
+
+char valor = 0;      // variable para almacenar caracter recibido
+
+int _4A=8; //left motor output 1
+int _3A=9; //left motor output 2
+int _1A=10;  //right motor output 1
+int _2A=11;  //right motor output 2
+
+void setup()
+{
+pinMode(_4A,OUTPUT);
+pinMode(_3A,OUTPUT);
+pinMode(_1A,OUTPUT);
+pinMode(_2A,OUTPUT);
+BT.begin(9600);    // comunicacion serie entre Arduino y el modulo
+Serial.begin(9600);
+sTOP();
+}
+void loop()
+{
+
+if (BT.available()){     // si hay informacion disponible desde modulo
+  valor = BT.read();   // almacena en valor el caracter recibido desde modulo
+Serial.println(valor);
+if(valor=='F')
+{
+ForWard();
+}
+if(valor=='B')
+{
+BackWard();
+}
+if(valor=='L')
+{
+Left();
+}
+if(valor=='R')
+{
+Right();
+}
+if(valor=='S')
+{
+sTOP();
+}
+}
+}
+void ForWard()
+{
+digitalWrite(_4A,HIGH);
+digitalWrite(_3A,LOW);
+digitalWrite(_1A,HIGH);
+digitalWrite(_2A,LOW);
+}
+void BackWard()
+{
+digitalWrite(_4A,LOW);
+digitalWrite(_3A,HIGH);
+digitalWrite(_1A,LOW);
+digitalWrite(_2A,HIGH);
+}
+void Left()
+{
+digitalWrite(_4A,LOW);
+digitalWrite(_3A,HIGH);
+digitalWrite(_1A,HIGH);
+digitalWrite(_2A,LOW);
+}
+void Right()
+{
+digitalWrite(_4A,HIGH);
+digitalWrite(_3A,LOW);
+digitalWrite(_1A,LOW);
+digitalWrite(_2A,HIGH);
+}
+void sTOP()
+{
+digitalWrite(_4A,LOW);
+digitalWrite(_3A,LOW);
+digitalWrite(_1A,LOW);
+digitalWrite(_2A,LOW);
+}
